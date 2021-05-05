@@ -9,27 +9,11 @@ WINDOW_HEIGHT = 480
 
 running = True
 
-sentra = car()
+sentra = car(sys.argv[1])
 
 print(sentra.connection.is_connected())
 #init pygame
 pygame.init()
-
-#make timers
-rpmTimer = time.time()
-speedTimer = time.time()
-loadTimer = time.time()
-
-
-data = dict(sentra.getData())
-#buffer data
-rpmBuff = data["rpm"]
-speedBuff = data["speed"]
-loadBuff = data["load"]
-
-rpmCurr = 0
-speedCurr = 0
-loadCurr = 0
 
 #create window
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -50,13 +34,12 @@ meter = pygame.transform.scale(meter, (250, 250))
 def handle_events():
     global running
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_x):
             running = False
 
 def draw():
     global window
     global clock
-    global speedBuff, speedCurr, rpmBuff, rpmCurr, speedTimer, rpmTimer
     window.fill((0,0,0))
 
     window.blit(logo, (5*WINDOW_WIDTH/8, 5*WINDOW_HEIGHT/8))
@@ -69,21 +52,11 @@ def draw():
     data = dict(sentra.getData())
 
     if "speed" in data:
-        if(data["speed"] != speedBuff):
-            speedTimer = time.time() - speedTimer
-            speedBuff = data["speed"]
-        speedText = font.render("Speed: " + str(speedCurr), True, color)
+        speedText = font.render("Speed: " + str(data["speed"]), True, color)
         window.blit(speedText, (0, 0))
 
     if "rpm" in data:
-        if(data["rpm"] != rpmBuff):
-            rpmCurr = rpmBuff
-            rpmTimer = time.time() - rpmTimer
-            rpmBuff = data["rpm"]
-        else:
-            #print(rpmTimer*int(clock.get_fps()))
-            rpmCurr += (rpmBuff-rpmCurr) / (rpmTimer*int(clock.get_fps()+1))
-        rmpText = font.render(str(int(rpmCurr // 1)), True, color)
+        rmpText = font.render(str(int(data["rpm"] // 1)), True, color)
         window.blit(rmpText, (250/2 - rmpText.get_rect().width/2
             , WINDOW_HEIGHT/4 + 250/2 - font_size/2))
 
