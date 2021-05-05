@@ -13,7 +13,7 @@ data = [
 
 class car:
     def __init__(self, port):
-        self.connection = obd.Async(PORT)
+        self.connection = obd.Async(port)
         for i in data:
             self.connection.watch(i)
 
