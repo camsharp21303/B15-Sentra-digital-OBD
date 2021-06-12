@@ -31,6 +31,9 @@ meter = pygame.image.load("/home/pi/meter.png")
 meter.convert()
 meter = pygame.transform.scale(meter, (250, 250))
 
+cam = pygame.camera.Camera("/dev/video0", (1280, 720))
+cam.start()
+
 def handle_events():
     global running
     for event in pygame.event.get():
@@ -70,6 +73,8 @@ def draw():
     load = data["load"] / 100
     pygame.draw.rect(window, (255, 255, 255), pygame.Rect(WINDOW_WIDTH/2, 0, 350, 40), 0)
     pygame.draw.rect(window, (255, 0, 255), pygame.Rect(WINDOW_WIDTH/2, 0, 350*load, 40), 0)
+
+    window.blit(cam.get_image(), (0, 0))
 
 
 while running:
