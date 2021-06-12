@@ -1,4 +1,5 @@
 import pygame
+import pygame.camera
 import sys
 import obd
 import time
