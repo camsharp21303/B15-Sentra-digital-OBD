@@ -4,7 +4,7 @@ import obd
 import time
 from obd_data import car
 
-WINDOW_WIDTH = 800
+WINDOW_WIDTH = 720
 WINDOW_HEIGHT = 480
 
 running = True
@@ -20,14 +20,14 @@ window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
 #set the title
 pygame.display.set_caption("OBD 2 app")
-pygame.display.set_icon(pygame.image.load('nissan.png'))
+#pygame.display.set_icon(pygame.image.load('nissan.png'))
 clock = pygame.time.Clock()
 
-logo = pygame.image.load("logo.png")
+logo = pygame.image.load("/home/pi/logo.png")
 logo.convert()
 logo = pygame.transform.scale(logo, (177, 136))
 
-meter = pygame.image.load("meter.png")
+meter = pygame.image.load("/home/pi/meter.png")
 meter.convert()
 meter = pygame.transform.scale(meter, (250, 250))
 
