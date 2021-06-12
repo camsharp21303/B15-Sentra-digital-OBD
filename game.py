@@ -15,6 +15,7 @@ sentra = car(sys.argv[1])
 print(sentra.connection.is_connected())
 #init pygame
 pygame.init()
+pygame.camera.init()
 
 #create window
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
