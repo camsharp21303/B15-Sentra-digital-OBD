@@ -22,7 +22,7 @@ window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
 #set the title
 pygame.display.set_caption("OBD 2 app")
-#pygame.display.set_icon(pygame.image.load('nissan.png'))
+pygame.display.set_icon(pygame.image.load('nissan.png'))
 clock = pygame.time.Clock()
 
 logo = pygame.image.load("/home/pi/logo.png")
@@ -46,6 +46,9 @@ def draw():
     global window
     global clock
     window.fill((0,0,0))
+    cam_image = cam.get_image()
+    cam_image = pygame.transform.scale(cam_image, (150, 84))
+    window.blit(cam_image, (0, 0))
 
     window.blit(logo, (5*WINDOW_WIDTH/8, 5*WINDOW_HEIGHT/8))
     window.blit(meter, (0, WINDOW_HEIGHT/4))
@@ -75,8 +78,6 @@ def draw():
     load = data["load"] / 100
     pygame.draw.rect(window, (255, 255, 255), pygame.Rect(WINDOW_WIDTH/2, 0, 350, 40), 0)
     pygame.draw.rect(window, (255, 0, 255), pygame.Rect(WINDOW_WIDTH/2, 0, 350*load, 40), 0)
-
-    window.blit(cam.get_image(), (0, 0))
 
 
 while running:
