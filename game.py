@@ -5,17 +5,31 @@ import obd
 import time
 from obd_data import car
 
+default = {
+    "speed": "88",
+    "rpm": 2000,
+    "coolant": "200",
+    "load": 50
+}
+
+connected = False
+
 WINDOW_WIDTH = 720
 WINDOW_HEIGHT = 480
 
 running = True
 
-sentra = car(sys.argv[1])
+try:
+    sentra = car(sys.argv[1])
+    print("Connected to car")
+    connected = True
+except IndexError:
+    print("Not connecting to Car")
 
-print(sentra.connection.is_connected())
+
 #init pygame
 pygame.init()
-pygame.camera.init()
+#pygame.camera.init()
 
 #create window
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -25,16 +39,18 @@ pygame.display.set_caption("OBD 2 app")
 pygame.display.set_icon(pygame.image.load('nissan.png'))
 clock = pygame.time.Clock()
 
-logo = pygame.image.load("/home/pi/logo.png")
+logo = pygame.image.load("logo.png")
 logo.convert()
 logo = pygame.transform.scale(logo, (177, 136))
 
-meter = pygame.image.load("/home/pi/meter.png")
+meter = pygame.image.load("meter.png")
 meter.convert()
 meter = pygame.transform.scale(meter, (250, 250))
 
-cam = pygame.camera.Camera("/dev/video0", (1280, 720))
-cam.start()
+#camlist = pygame.camera.list_cameras()
+#if camlist:
+    #cam = pygame.camera.Camera(camlist[0], (1280, 720))
+#cam.start()
 
 def handle_events():
     global running
@@ -46,38 +62,58 @@ def draw():
     global window
     global clock
     window.fill((0,0,0))
-    cam_image = cam.get_image()
-    cam_image = pygame.transform.scale(cam_image, (150, 84))
-    window.blit(cam_image, (0, 0))
+    #cam_image = cam.get_image()
+    #cam_image = pygame.transform.scale(cam_image, (150, 84))
+    #window.blit(cam_image, (0, 0))
 
-    window.blit(logo, (5*WINDOW_WIDTH/8, 5*WINDOW_HEIGHT/8))
-    window.blit(meter, (0, WINDOW_HEIGHT/4))
+    #window.blit(logo, (5*WINDOW_WIDTH/8, 5*WINDOW_HEIGHT/8))
+    #window.blit(meter, (0, WINDOW_HEIGHT/4))
 
     color = (255, 255, 255)
-    font_size = 40
+    font_size = 30
     font = pygame.font.SysFont('/usr/share/fonts/TTF/Arial.ttf', font_size, False, False)
+    font2 = pygame.font.SysFont('/usr/share/fonts/TTF/Arial.ttf', 50, False, False)
 
-    data = dict(sentra.getData())
 
-    if "speed" in data:
-        speedText = font.render("Speed: " + str(data["speed"]), True, color)
-        window.blit(speedText, (0, 0))
+    if(not connected):
+        data = default
+    else:
+        data = dict(sentra.getData())
 
-    if "rpm" in data:
-        rmpText = font.render(str(int(data["rpm"] // 1)), True, color)
-        window.blit(rmpText, (250/2 - rmpText.get_rect().width/2
-            , WINDOW_HEIGHT/4 + 250/2 - font_size/2))
+    pygame.draw.rect(window, (255, 255, 255), pygame.Rect(0, WINDOW_HEIGHT/2, 170, 170), 2)
+    speedText = font.render("Speed (MPH)", True, color)
+    window.blit(speedText, (85 - speedText.get_width()/2, WINDOW_HEIGHT/2 + 10))
 
-    if "coolant" in data:
-        tempText = font.render("Water Temp: " + str(data["coolant"]), True, color)
-        window.blit(tempText, (0, (font_size+10)*2))
+    speedSTAT = font2.render(str(data["speed"]), True, color)
+    window.blit(speedSTAT, (85 - speedSTAT.get_width()/2, WINDOW_HEIGHT/2 + 85))
+
+
+    pygame.draw.rect(window, (255, 255, 255), pygame.Rect(180, WINDOW_HEIGHT/2, 170, 170), 2)
+    rpmText = font.render("RPM", True, color)
+    window.blit(rpmText, (265 - rpmText.get_width()/2, WINDOW_HEIGHT/2 + 10))
+
+    rpmSTAT = font2.render(str(data["rpm"]), True, color)
+    window.blit(rpmSTAT, (265 - rpmSTAT.get_width()/2, WINDOW_HEIGHT/2 + 85))
+
+
+    pygame.draw.rect(window, (255, 255, 255), pygame.Rect(360, WINDOW_HEIGHT/2, 170, 170), 2)
+    tempText = font.render("Coolant (F)", True, color)
+    window.blit(tempText, (445 - tempText.get_width()/2, WINDOW_HEIGHT/2 + 10))
+
+    tempSTAT = font2.render(str(data["coolant"]), True, color)
+    window.blit(tempSTAT, (445 - tempSTAT.get_width()/2, WINDOW_HEIGHT/2 + 85))
+
+
+    pygame.draw.rect(window, (255, 255, 255), pygame.Rect(540, WINDOW_HEIGHT/2, 170, 170), 2)
+    loadText = font.render("Engine Load", True, color)
+    window.blit(loadText, (625 - loadText.get_width()/2, WINDOW_HEIGHT/2 + 10))
+
+    loadSTAT = font2.render(str(data["load"]) + "%", True, color)
+    window.blit(loadSTAT, (625 - loadSTAT.get_width()/2, WINDOW_HEIGHT/2 + 85))
+
 
     fpsText = font.render(str(int(clock.get_fps())), True, color)
     window.blit(fpsText, (0, WINDOW_HEIGHT-font_size))
-
-    load = data["load"] / 100
-    pygame.draw.rect(window, (255, 255, 255), pygame.Rect(WINDOW_WIDTH/2, 0, 350, 40), 0)
-    pygame.draw.rect(window, (255, 0, 255), pygame.Rect(WINDOW_WIDTH/2, 0, 350*load, 40), 0)
 
 
 while running:
