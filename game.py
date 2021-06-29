@@ -19,7 +19,7 @@ WINDOW_HEIGHT = 480
 
 running = True
 
-work_dir = sys.argv[0] + "\\"
+work_dir = sys.argv[0].replace("game.py", "")
 
 try:
     sentra = car(sys.argv[1])
