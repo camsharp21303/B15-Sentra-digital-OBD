@@ -39,16 +39,16 @@ window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
 #set the title
 pygame.display.set_caption("OBD 2 app")
-pygame.display.set_icon(pygame.image.load('nissan.png'))
+#pygame.display.set_icon(pygame.image.load('nissan.png'))
 clock = pygame.time.Clock()
 
-logo = pygame.image.load(work_dir + "logo.png")
-logo.convert()
-logo = pygame.transform.scale(logo, (177, 136))
+#logo = pygame.image.load(work_dir + "logo.png")
+#logo.convert()
+#logo = pygame.transform.scale(logo, (177, 136))
 
-meter = pygame.image.load(work_dir + "meter.png")
-meter.convert()
-meter = pygame.transform.scale(meter, (250, 250))
+#meter = pygame.image.load(work_dir + "meter.png")
+#meter.convert()
+#meter = pygame.transform.scale(meter, (250, 250))
 
 try:
     cam = pygame.camera.Camera("/dev/video0", (1280, 720))
