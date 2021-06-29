@@ -82,36 +82,36 @@ def draw():
     
     rect_size = WINDOW_WIDTH/4 -10
 
-    pygame.draw.rect(window, (255, 255, 255), pygame.Rect(0, WINDOW_HEIGHT/2, rect_size, rect_size), 2)
+    pygame.draw.rect(window, (255, 255, 255), pygame.Rect(5, WINDOW_HEIGHT/2, rect_size, rect_size), 2)
     speedText = font.render("Speed (MPH)", True, color)
-    window.blit(speedText, (85 - speedText.get_width()/2, WINDOW_HEIGHT/2 + 10))
+    window.blit(speedText, (rect_size/2 - speedText.get_width()/2, WINDOW_HEIGHT/2 + 10))
 
     speedSTAT = font2.render(str(data["speed"]), True, color)
-    window.blit(speedSTAT, (85 - speedSTAT.get_width()/2, WINDOW_HEIGHT/2 + 85))
+    window.blit(speedSTAT, (rect_size/2 - speedSTAT.get_width()/2, WINDOW_HEIGHT/2 + rect_size/2))
 
 
-    pygame.draw.rect(window, (255, 255, 255), pygame.Rect(180, WINDOW_HEIGHT/2, rect_size, rect_size), 2)
+    pygame.draw.rect(window, (255, 255, 255), pygame.Rect(rect_size+15, WINDOW_HEIGHT/2, rect_size, rect_size), 2)
     rpmText = font.render("RPM", True, color)
-    window.blit(rpmText, (265 - rpmText.get_width()/2, WINDOW_HEIGHT/2 + 10))
+    window.blit(rpmText, (rect_size+(rect_size/2)+15 - rpmText.get_width()/2, WINDOW_HEIGHT/2 + 10))
 
     rpmSTAT = font2.render(str(data["rpm"]), True, color)
-    window.blit(rpmSTAT, (265 - rpmSTAT.get_width()/2, WINDOW_HEIGHT/2 + 85))
+    window.blit(rpmSTAT, (rect_size+(rect_size/2)+15 - rpmSTAT.get_width()/2, WINDOW_HEIGHT/2 + 85))
 
 
-    pygame.draw.rect(window, (255, 255, 255), pygame.Rect(360, WINDOW_HEIGHT/2, rect_size, rect_size), 2)
+    pygame.draw.rect(window, (255, 255, 255), pygame.Rect(WINDOW_WIDTH/2 +5, WINDOW_HEIGHT/2, rect_size, rect_size), 2)
     tempText = font.render("Coolant (F)", True, color)
-    window.blit(tempText, (445 - tempText.get_width()/2, WINDOW_HEIGHT/2 + 10))
+    window.blit(tempText, (WINDOW_WIDTH/2 + rect_size/2 + 5 - tempText.get_width()/2, WINDOW_HEIGHT/2 + 10))
 
     tempSTAT = font2.render(str(data["coolant"]), True, color)
-    window.blit(tempSTAT, (445 - tempSTAT.get_width()/2, WINDOW_HEIGHT/2 + 85))
+    window.blit(tempSTAT, (WINDOW_WIDTH/2 + rect_size/2 + 5 - tempSTAT.get_width()/2, WINDOW_HEIGHT/2 + rect_size/2))
 
 
-    pygame.draw.rect(window, (255, 255, 255), pygame.Rect(540, WINDOW_HEIGHT/2, rect_size, rect_size), 2)
+    pygame.draw.rect(window, (255, 255, 255), pygame.Rect(3*WINDOW_WIDTH/4 +5, WINDOW_HEIGHT/2, rect_size, rect_size), 2)
     loadText = font.render("Engine Load", True, color)
-    window.blit(loadText, (625 - loadText.get_width()/2, WINDOW_HEIGHT/2 + 10))
+    window.blit(loadText, (3*WINDOW_WIDTH/4+rect_size/2 + 5 - loadText.get_width()/2, WINDOW_HEIGHT/2 + 10))
 
     loadSTAT = font2.render(str(data["load"]) + "%", True, color)
-    window.blit(loadSTAT, (625 - loadSTAT.get_width()/2, WINDOW_HEIGHT/2 + 85))
+    window.blit(loadSTAT, (3*WINDOW_WIDTH/4+rect_size/2 + 5- loadSTAT.get_width()/2, WINDOW_HEIGHT/2 + 85))
 
 
     fpsText = font.render(str(int(clock.get_fps())), True, color)
