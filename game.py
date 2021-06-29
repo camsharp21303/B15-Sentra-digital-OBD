@@ -19,6 +19,8 @@ WINDOW_HEIGHT = 480
 
 running = True
 
+work_dir = sys.argv[0] + "\\"
+
 try:
     sentra = car(sys.argv[1])
     print("Connected to car")
@@ -39,11 +41,11 @@ pygame.display.set_caption("OBD 2 app")
 pygame.display.set_icon(pygame.image.load('nissan.png'))
 clock = pygame.time.Clock()
 
-logo = pygame.image.load("logo.png")
+logo = pygame.image.load(work_dir + "logo.png")
 logo.convert()
 logo = pygame.transform.scale(logo, (177, 136))
 
-meter = pygame.image.load("meter.png")
+meter = pygame.image.load(work_dir + "meter.png")
 meter.convert()
 meter = pygame.transform.scale(meter, (250, 250))
 
