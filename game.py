@@ -29,7 +29,7 @@ except IndexError:
 
 #init pygame
 pygame.init()
-pygame.camera.init()
+#pygame.camera.init()
 
 #create window
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -47,8 +47,8 @@ meter = pygame.image.load("meter.png")
 meter.convert()
 meter = pygame.transform.scale(meter, (250, 250))
 
-cam = pygame.camera.Camera("/dev/video0", (1280, 720))
-cam.start()
+#cam = pygame.camera.Camera("/dev/video0", (1280, 720))
+#cam.start()
 
 def handle_events():
     global running
@@ -60,9 +60,9 @@ def draw():
     global window
     global clock
     window.fill((0,0,0))
-    cam_image = cam.get_image()
-    cam_image = pygame.transform.scale(cam_image, (350, 196))
-    window.blit(cam_image, (WINDOW_WIDTH/2 - cam_image.get_width()/2, 10))
+    #cam_image = cam.get_image()
+    #cam_image = pygame.transform.scale(cam_image, (350, 196))
+    #window.blit(cam_image, (WINDOW_WIDTH/2 - cam_image.get_width()/2, 10))
 
     #window.blit(logo, (5*WINDOW_WIDTH/8, 5*WINDOW_HEIGHT/8))
     #window.blit(meter, (0, WINDOW_HEIGHT/4))
