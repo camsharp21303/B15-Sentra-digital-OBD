@@ -1,6 +1,6 @@
 import pygame
-import pygame.camera
 import sys
+from collections.abc import MutableMapping
 import obd
 import time
 from obd_data import car
@@ -12,6 +12,7 @@ default = {
     "load": 50
 }
 
+#variable to store if car is connected
 connected = False
 camera_connected = False
 
@@ -32,48 +33,30 @@ except IndexError:
 
 #init pygame
 pygame.init()
-pygame.camera.init()
 
 #create window
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
 #set the title
 pygame.display.set_caption("OBD 2 app")
-#pygame.display.set_icon(pygame.image.load('nissan.png'))
+
+#get the clock for controlling the frame rate
 clock = pygame.time.Clock()
-
-#logo = pygame.image.load(work_dir + "logo.png")
-#logo.convert()
-#logo = pygame.transform.scale(logo, (177, 136))
-
-#meter = pygame.image.load(work_dir + "meter.png")
-#meter.convert()
-#meter = pygame.transform.scale(meter, (250, 250))
-
-try:
-    cam = pygame.camera.Camera("/dev/video0", (1280, 720))
-    cam.start()
-    camera_connected = True
-except:
-    print("Camera Not Connected!")
 
 def handle_events():
     global running
     for event in pygame.event.get():
+        #handle 'x' for exiting application (restart app)
         if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_x):
             running = False
+        #press 'c' to clear DTCs
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_c:
+            sentra.clearDTC()
 
 def draw():
     global window
     global clock
     window.fill((0,0,0))
-    if(camera_connected):
-        cam_image = cam.get_image()
-        cam_image = pygame.transform.scale(cam_image, (350, 196))
-        window.blit(cam_image, (WINDOW_WIDTH/2 - cam_image.get_width()/2, 10))
-
-    #window.blit(logo, (5*WINDOW_WIDTH/8, 5*WINDOW_HEIGHT/8))
-    #window.blit(meter, (0, WINDOW_HEIGHT/4))
 
     color = (255, 255, 255)
     font_size = 30
@@ -130,6 +113,6 @@ while running:
     draw()
 
     pygame.display.update()
-pygame.camera.quit()
+
 pygame.quit()
 sys.exit()

@@ -13,7 +13,7 @@ data = [
 
 class car:
     def __init__(self, port):
-        self.connection = obd.Async(port)
+        self.connection = obd.Async(portstr=port, protocol=3)
         for i in data:
             self.connection.watch(i)
 
@@ -37,4 +37,6 @@ class car:
             response = self.connection.query(commands.ENGINE_LOAD)
             results["load"] = response.value.magnitude
         return results
-        
+    
+    def clearDTC(self):
+        self.connection.query(commands.CLEAR_DTC)
