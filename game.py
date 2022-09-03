@@ -1,3 +1,4 @@
+from cmath import rect
 import pygame
 import sys
 from collections.abc import MutableMapping
@@ -43,6 +44,11 @@ pygame.display.set_caption("OBD 2 app")
 #get the clock for controlling the frame rate
 clock = pygame.time.Clock()
 
+def center_x_text(text_element, rect):
+    return (rect.width/2 - text_element.get_width()/2) + rect.x
+def center_y_text(text_element, rect):
+    return (rect.height/2 - text_element.get_height()/2) + rect.y
+
 def handle_events():
     global running
     for event in pygame.event.get():
@@ -69,38 +75,42 @@ def draw():
     else:
         data = dict(sentra.getData())
     
-    rect_size = WINDOW_WIDTH/4 -10
+    rect_size = WINDOW_WIDTH/3 -40
 
-    pygame.draw.rect(window, (255, 255, 255), pygame.Rect(5, WINDOW_HEIGHT/2, rect_size, rect_size), 2)
+    speedRect = pygame.Rect((20, 20), (rect_size, rect_size))
+    pygame.draw.rect(window, (255, 255, 255), speedRect, 2)
     speedText = font.render("Speed (MPH)", True, color)
-    window.blit(speedText, (rect_size/2 - speedText.get_width()/2, WINDOW_HEIGHT/2 + 10))
+    window.blit(speedText, (center_x_text(speedText, speedRect), speedRect.y + 10))
 
     speedSTAT = font2.render(str(data["speed"]), True, color)
-    window.blit(speedSTAT, (rect_size/2 - speedSTAT.get_width()/2, WINDOW_HEIGHT/2 + rect_size/2))
+    window.blit(speedSTAT, ((center_x_text(speedSTAT, speedRect), center_y_text(speedSTAT, speedRect))))
 
 
-    pygame.draw.rect(window, (255, 255, 255), pygame.Rect(rect_size+15, WINDOW_HEIGHT/2, rect_size, rect_size), 2)
+    rpmRect = pygame.Rect((speedRect.x + speedRect.width + 20, 20), (rect_size, rect_size))
+    pygame.draw.rect(window, (255, 255, 255), rpmRect, 2)
     rpmText = font.render("RPM", True, color)
-    window.blit(rpmText, (rect_size+(rect_size/2)+15 - rpmText.get_width()/2, WINDOW_HEIGHT/2 + 10))
+    window.blit(rpmText, (center_x_text(rpmText, rpmRect), rpmRect.y + 10))
 
     rpmSTAT = font2.render(str(data["rpm"]), True, color)
-    window.blit(rpmSTAT, (rect_size+(rect_size/2)+15 - rpmSTAT.get_width()/2, WINDOW_HEIGHT/2 + 85))
+    window.blit(rpmSTAT, ((center_x_text(rpmSTAT, rpmRect), center_y_text(rpmSTAT, rpmRect))))
 
 
-    pygame.draw.rect(window, (255, 255, 255), pygame.Rect(WINDOW_WIDTH/2 +5, WINDOW_HEIGHT/2, rect_size, rect_size), 2)
+    tempRect = pygame.Rect((20, speedRect.y + speedRect.height + 20), (rect_size, rect_size))
+    pygame.draw.rect(window, (255, 255, 255), tempRect, 2)
     tempText = font.render("Coolant (F)", True, color)
-    window.blit(tempText, (WINDOW_WIDTH/2 + rect_size/2 + 5 - tempText.get_width()/2, WINDOW_HEIGHT/2 + 10))
+    window.blit(tempText, (center_x_text(tempText, tempRect), tempRect.y + 10))
 
     tempSTAT = font2.render(str(data["coolant"]), True, color)
-    window.blit(tempSTAT, (WINDOW_WIDTH/2 + rect_size/2 + 5 - tempSTAT.get_width()/2, WINDOW_HEIGHT/2 + rect_size/2))
+    window.blit(tempSTAT, ((center_x_text(tempSTAT, tempRect), center_y_text(tempSTAT, tempRect))))
 
 
-    pygame.draw.rect(window, (255, 255, 255), pygame.Rect(3*WINDOW_WIDTH/4 +5, WINDOW_HEIGHT/2, rect_size, rect_size), 2)
+    loadRect = pygame.Rect((speedRect.x + speedRect.height + 20, speedRect.y + speedRect.height + 20), (rect_size, rect_size))
+    pygame.draw.rect(window, (255, 255, 255), loadRect, 2)
     loadText = font.render("Engine Load", True, color)
-    window.blit(loadText, (3*WINDOW_WIDTH/4+rect_size/2 + 5 - loadText.get_width()/2, WINDOW_HEIGHT/2 + 10))
+    window.blit(loadText, (center_x_text(loadText, loadRect), loadRect.y + 10))
 
     loadSTAT = font2.render(str(data["load"]) + "%", True, color)
-    window.blit(loadSTAT, (3*WINDOW_WIDTH/4+rect_size/2 + 5- loadSTAT.get_width()/2, WINDOW_HEIGHT/2 + 85))
+    window.blit(loadSTAT, ((center_x_text(loadSTAT, loadRect), center_y_text(loadSTAT, loadRect))))
 
 
     fpsText = font.render(str(int(clock.get_fps())), True, color)
@@ -116,3 +126,4 @@ while running:
 
 pygame.quit()
 sys.exit()
+
