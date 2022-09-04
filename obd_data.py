@@ -40,3 +40,6 @@ class car:
     
     def clearDTC(self):
         self.connection.query(commands.CLEAR_DTC)
+
+    def getDTCCodes(self):
+        return self.connection.query(commands.GET_DTC)

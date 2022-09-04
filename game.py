@@ -112,13 +112,25 @@ def draw():
     loadSTAT = font2.render(str(data["load"]) + "%", True, color)
     window.blit(loadSTAT, ((center_x_text(loadSTAT, loadRect), center_y_text(loadSTAT, loadRect))))
 
+    dtcRect = pygame.Rect((rpmRect.x + rpmRect.width + 20, 20), (rect_size, 2*rect_size + 20))
+    pygame.draw.rect(window, (255, 255, 255), dtcRect, 2)
+    dtcText = font.render("DTC", True, color)
+    window.blit(dtcText, (center_x_text(dtcText, dtcRect), dtcRect.y + 10))
+
+    if connected:
+        dtcs = sentra.getDTCCodes()
+        y = dtcRect.y + 10 + dtcText.get_height()
+        for code in dtcs:
+            codeText = font2.render(code, True, (255, 255, 0))
+            window.blit(codeText, ((dtcRect + 10, y)))
+            y += codeText.get_height() + 10
 
     fpsText = font.render(str(int(clock.get_fps())), True, color)
     window.blit(fpsText, (0, WINDOW_HEIGHT-font_size))
 
 
 while running:
-    clock.tick(60)
+    clock.tick(30)
     handle_events()
     draw()
 
